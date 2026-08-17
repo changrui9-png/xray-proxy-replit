@@ -1,0 +1,20 @@
+{
+  "log": { "loglevel": "warning" },
+  "inbounds": [{
+    "port": 3000,
+    "protocol": "vless",
+    "settings": {
+      "clients": [{ "id": "57f951fb-757e-4ace-8fe4-4cc9fd4e49cf" }],
+      "decryption": "none"
+    },
+    "streamSettings": {
+      "network": "ws",
+      "security": "none",
+      "wsSettings": { "path": "/hk-cboz7qx16y" }
+    }
+  }],
+  "outbounds": [
+    { "protocol": "freedom", "settings": {} },
+    { "protocol": "blackhole", "settings": {}, "tag": "blocked" }
+  ]
+}
