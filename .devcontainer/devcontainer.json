@@ -1,11 +1,15 @@
 {
   "image": "mcr.microsoft.com/devcontainers/universal:2",
   "postCreateCommand": "bash /workspaces/xray-proxy-replit/start.sh",
-  "forwardPorts": [3000],
+  "forwardPorts": [8080, 3000],
   "portsAttributes": {
-    "3000": {
-      "label": "xray-vless",
+    "8080": {
+      "label": "xray-http",
       "onAutoForward": "notify"
+    },
+    "3000": {
+      "label": "xray-proxy",
+      "onAutoForward": "ignore"
     }
   }
 }

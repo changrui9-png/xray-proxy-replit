@@ -1,20 +1,75 @@
 {
-  "log": { "loglevel": "warning" },
-  "inbounds": [{
-    "port": 3000,
-    "protocol": "vless",
-    "settings": {
-      "clients": [{ "id": "57f951fb-757e-4ace-8fe4-4cc9fd4e49cf" }],
-      "decryption": "none"
+  "log": {
+    "loglevel": "warning"
+  },
+  "inbounds": [
+    {
+      "port": 1080,
+      "listen": "0.0.0.0",
+      "protocol": "socks",
+      "settings": {
+        "auth": "noauth",
+        "users": []
+      }
     },
-    "streamSettings": {
-      "network": "ws",
-      "security": "none",
-      "wsSettings": { "path": "/hk-cboz7qx16y" }
+    {
+      "port": 8080,
+      "listen": "0.0.0.0",
+      "protocol": "http",
+      "settings": {
+        "auth": "noauth",
+        "users": []
+      }
     }
-  }],
+  ],
   "outbounds": [
-    { "protocol": "freedom", "settings": {} },
-    { "protocol": "blackhole", "settings": {}, "tag": "blocked" }
-  ]
+    {
+      "tag": "proxy",
+      "protocol": "vless",
+      "settings": {
+        "vnext": [
+          {
+            "address": "expert-happiness-wv9gxvvx7gj9f9vxr.github.dev",
+            "port": 443,
+            "users": [
+              {
+                "id": "",
+                "flow": "none",
+                "encryption": "none"
+              }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "ws",
+        "security": "tls",
+        "wsSettings": {
+          "path": "/ws",
+          "headers": {
+            "Host": "expert-happiness-wv9gxvvx7gj9f9vxr.github.dev"
+          }
+        }
+      },
+      "mux": {
+        "enabled": true,
+        "concurrency": 8
+      }
+    },
+    {
+      "tag": "direct",
+      "protocol": "freedom",
+      "settings": {}
+    }
+  ],
+  "routing": {
+    "domainStrategy": "AsIs",
+    "rules": [
+      {
+        "type": "field",
+        "ip": ["geoip:private"],
+        "outboundTag": "direct"
+      }
+    ]
+  }
 }
